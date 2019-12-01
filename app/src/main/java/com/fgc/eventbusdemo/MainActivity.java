@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);//
         tv_start_new_page = findViewById(R.id.tv_start_new_page);
         tv_start_new_page.setOnClickListener(new View.OnClickListener() {
             @Override
