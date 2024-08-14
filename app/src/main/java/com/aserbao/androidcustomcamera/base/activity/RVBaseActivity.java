@@ -1,0 +1,49 @@
+package com.aserbao.androidcustomcamera.base.activity;
+
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.aserbao.androidcustomcamera.base.adapter.CommonAdapter;
+import com.aserbao.androidcustomcamera.base.beans.BaseRecyclerBean;
+import com.aserbao.androidcustomcamera.base.utils.APermissionUtils;
+import com.aserbao.androidcustomcamera.base.viewHolder.IBaseRecyclerItemClickListener;
+import com.fgc.eventbusdemo.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public abstract class RVBaseActivity extends AppCompatActivity implements IBaseRecyclerItemClickListener {
+    public final String TAG = this.getClass().getCanonicalName();
+    @Nullable
+    @BindView(R.id.base_rv)
+    public RecyclerView mBaseRv;
+    public CommonAdapter mCommonAdapter;
+    public LinearLayoutManager mLinearLayoutManager;
+
+    public List<BaseRecyclerBean> mBaseRecyclerBeen = new ArrayList<>();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
+        ButterKnife.bind(this);
+        initGetData();
+        initView();
+    }
+
+    protected abstract void initGetData();
+
+
+    protected void initView() {
+        mCommonAdapter = new CommonAdapter(this, this, mBaseRecyclerBeen,this);
+        mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mBaseRv.setLayoutManager(mLinearLayoutManager);
+        mBaseRv.setAdapter(mCommonAdapter);
+        APermissionUtils.checkPermission(this);
+    }
+}
