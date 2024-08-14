@@ -10,6 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.aserbao.androidcustomcamera.WelcomeActivity;
+import com.aserbao.androidcustomcamera.base.utils.StaticFinalValues;
+import com.aserbao.androidcustomcamera.simple.SimpleLocalVideoActivity;
+import com.aserbao.androidcustomcamera.whole.createVideoByVoice.localEdit.LocalVideoActivity;
+import com.aserbao.androidcustomcamera.whole.record.RecorderActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,12 +47,24 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_click:
-                Toast.makeText(MainActivity.this, "dada11", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, WelcomeActivity.class);
-                startActivity(intent);
+                gotoSimpleLocalVideoActivity();
                 break;
         }
+    }
+
+    private void gotoWelcomeActivity() {
+        Toast.makeText(MainActivity.this, "dada11", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, WelcomeActivity.class);
+        startActivity(intent);
+    }
+
+    private void gotoSimpleLocalVideoActivity() {
+        Intent intent = new Intent(MainActivity.this, SimpleLocalVideoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(StaticFinalValues.MISNOTCOMELOCAL, 0);
+        intent.putExtra(StaticFinalValues.BUNDLE, bundle);
+        startActivity(intent);
     }
 
     @Override

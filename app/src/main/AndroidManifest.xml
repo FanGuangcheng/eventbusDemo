@@ -90,6 +90,8 @@
         <activity
             android:name="com.aserbao.androidcustomcamera.whole.pickvideo.VideoPickActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.aserbao.androidcustomcamera.simple.SimpleLocalVideoActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.aserbao.androidcustomcamera.whole.createVideoByVoice.localEdit.LocalVideoActivity"
             android:screenOrientation="portrait" />
