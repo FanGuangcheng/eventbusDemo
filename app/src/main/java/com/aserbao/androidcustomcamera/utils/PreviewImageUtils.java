@@ -49,6 +49,12 @@ public class PreviewImageUtils {
             ffmmr = new FFmpegMediaMetadataRetriever();
             ffmmr.setDataSource(url);
             String durationStr = ffmmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION);
+            videoWidth = Integer.parseInt(ffmmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+            videoHeight = Integer.parseInt(ffmmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+//            if (videoWidth > 1000) {
+//                videoWidth = videoWidth / 4;
+//                videoHeight = videoHeight / 4;
+//            }
             mDuration = Integer.parseInt(durationStr) / 1000;
             ffmmr.release();
             ffmmr = null;
@@ -104,7 +110,7 @@ public class PreviewImageUtils {
                     continue;
                 }
                 if (ffmmr != null) {
-                    bitmap = ffmmr.getScaledFrameAtTime(pos, 640, 360);
+                    bitmap = ffmmr.getScaledFrameAtTime(pos, videoWidth, videoHeight);
                     if (bitmap != null)
                         saveBitmap(bitmap, i, fileName);
                 }
@@ -229,6 +235,12 @@ public class PreviewImageUtils {
             ffmmr = new FFmpegMediaMetadataRetriever();
             ffmmr.setDataSource(url);
             String durationStr = ffmmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION);
+            videoWidth = Integer.parseInt(ffmmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+            videoHeight = Integer.parseInt(ffmmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+            if (videoWidth > 1000) {
+                videoWidth = videoWidth / 4;
+                videoHeight = videoHeight / 4;
+            }
             ffmmr.release();
             ffmmr = null;
             return Integer.parseInt(durationStr);
@@ -240,8 +252,12 @@ public class PreviewImageUtils {
         return 0;
     }
 
+    private int videoWidth = 0;
+    private int videoHeight = 0;
+
+
     public Bitmap getFrameImgAtTime(String url, long position){
-        Log.d("fgcfgc", "PreviewImageUtils getFrameImgAtTime position:" + position);
+        Log.d("fgcfgc", "PreviewImageUtils getFrameImgAtTime position:" + position + ", videoWidth:" +videoWidth);
 
         try {
             if (ffmmr != null) {
@@ -250,15 +266,22 @@ public class PreviewImageUtils {
             }
             ffmmr = new FFmpegMediaMetadataRetriever();
             ffmmr.setDataSource(url);
+            if (videoWidth <= 0 || videoHeight <= 0) {
+                videoWidth = 640;
+                videoHeight = 360;
+            }
+
             if (ffmmr != null) {
-                return ffmmr.getScaledFrameAtTime(position, 1080, 720);
+                Bitmap bitmap = ffmmr.getScaledFrameAtTime(position, videoWidth, videoHeight);
+                Log.d("fgcfgc", "PreviewImageUtils getFrameImgAtTime end---- position:" + position + ", videoWidth:" +videoWidth);
+                return bitmap;
             }
             ffmmr.release();
             ffmmr = null;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d("fgcfgc", "PreviewImageUtils getFrameImgAtTime end---- position:" + position);
+        Log.d("fgcfgc", "PreviewImageUtils getFrameImgAtTime end---- position:" + position + ", videoWidth:" +videoWidth);
         return null;
     }
 }

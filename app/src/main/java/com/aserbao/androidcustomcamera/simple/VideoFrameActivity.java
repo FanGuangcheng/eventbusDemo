@@ -36,10 +36,10 @@ public class VideoFrameActivity extends AppCompatActivity {
     SeekBar mSeekProgress;
     // huawei 手机video
 //    private final static String inputVideoPath = "/storage/emulated/0/DCIM/Camera/VID_20240503_161251.mp4";
-    private final static String inputVideoPath = "/storage/emulated/0/DCIM/Camera/VID_20240728_193832.mp4";
+//    private final static String inputVideoPath = "/storage/emulated/0/DCIM/Camera/VID_20240728_193832.mp4";
 
     // 小米手机video
-//    private final static String inputVideoPath = "/storage/emulated/0/aserbaoCamera/1723032638188.mp4";
+    private final static String inputVideoPath = "/storage/emulated/0/aserbaoCamera/1723032638188.mp4";
 
 
     @Override
@@ -52,22 +52,25 @@ public class VideoFrameActivity extends AppCompatActivity {
         mTvVideoTime = findViewById(R.id.tv_video_time);
         mSeekProgress = findViewById(R.id.seek_progress);
 
-//        PreviewImageUtils.getInstance().setStop(true);
-//        PreviewImageUtils.getInstance().startDecode(null, "/storage/emulated/0/aserbaoCamera/1723032638188.mp4");
+        PreviewImageUtils.getInstance().setStop(true);
+        PreviewImageUtils.getInstance().startDecode(null, inputVideoPath);
 
         init();
     }
     private void init() {
-        int duration = PreviewImageUtils.getInstance().getVideoDuration(inputVideoPath);
-        mSeekProgress.setMax(duration);
+        final int duration = PreviewImageUtils.getInstance().getVideoDuration(inputVideoPath);
+
+        mSeekProgress.setMax(100);
         mTvVideoTime.setText(":" + duration);
         mSeekProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                float prosssss = progress * 1.0f / 100;
                 Log.d("fgcfgc", "sonProgressChanged start:");
 
                 mTvVideoTime.setText(":" + progress);
-                Bitmap bitmap = PreviewImageUtils.getInstance().getFrameImgAtTime(inputVideoPath, progress * 1000);
+                Bitmap bitmap = PreviewImageUtils.getInstance().getFrameImgAtTime(inputVideoPath, (long) (prosssss * duration * 1000));
                 if (bitmap != null) {
                     Log.d("fgcfgc", "set bitmap success:");
 
