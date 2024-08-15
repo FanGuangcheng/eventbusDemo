@@ -2,17 +2,26 @@ package com.aserbao.androidcustomcamera.simple;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.aserbao.androidcustomcamera.utils.PreviewImageUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.fgc.eventbusdemo.R;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,19 +74,42 @@ public class VideoFrameActivity extends AppCompatActivity {
         mSeekProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                float prosssss = progress * 1.0f / 100;
-                Log.d("fgcfgc", "sonProgressChanged start:");
-
                 mTvVideoTime.setText(":" + progress);
-                Bitmap bitmap = PreviewImageUtils.getInstance().getFrameImgAtTime(inputVideoPath, (long) (prosssss * duration * 1000));
-                if (bitmap != null) {
-                    Log.d("fgcfgc", "set bitmap success:");
 
-                    mIvVideoFrame.setImageBitmap(bitmap);
-                } else {
-                    Log.d("fgcfgc", "set bitmap null:");
+                int durationSecond = PreviewImageUtils.getInstance().mDuration <= 0 ? 1 : PreviewImageUtils.getInstance().mDuration;
+                float count = 100 / (float)durationSecond;
+
+                int index = (int) (progress / count);
+                if (index == durationSecond) {
+                    index = durationSecond - 1;
                 }
+
+                Log.d("fgcfgc", "index:" + index + "，progress：" + progress +"，count：" + count);
+
+                File file = new File("/storage/emulated/0/aserbaoFrames/frames/saveImg/frame_/" + index + ".jpg");
+
+//                Glide.with(VideoFrameActivity.this)
+//                        .load(file)
+//                        .into(mIvVideoFrame);
+
+
+                Glide.with(VideoFrameActivity.this)
+                        .load(file)
+                        .asBitmap()  // 如果需要加载为 Bitmap
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                // 加载成功时的回调
+                                mIvVideoFrame.setImageBitmap(resource);
+                                Log.d("fgcfgc", "Image load successful");
+                            }
+
+                            @Override
+                            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                                // 加载失败时的回调
+                                Log.e("fgcfgc", "Image load failed", e);
+                            }
+                        });
             }
 
             @Override

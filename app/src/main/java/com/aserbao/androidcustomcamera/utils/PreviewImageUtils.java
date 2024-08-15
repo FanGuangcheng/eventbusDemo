@@ -16,7 +16,7 @@ import wseemann.media.FFmpegMediaMetadataRetriever;
 public class PreviewImageUtils {
     private static FFmpegMediaMetadataRetriever ffmmr = null;
 //    private static final String savePath = SkyLocalContext.getContext().getCacheDir().getPath() + "/preview/";
-    private static final String savePath = "/storage/emulated/0/aserbaoFrames/frames/saveImg";
+    private static final String savePath = "/storage/emulated/0/aserbaoFrames/frames/saveImg/";
     private String filePath = null;
     private String fileName = null;
     private boolean isStop = false;
@@ -73,18 +73,20 @@ public class PreviewImageUtils {
         getDuration(url);
         File file = new File(url);
         if (file != null && file.exists()) {
-            fileName = file.getName();
+//            fileName = file.getName();
+            fileName = "frame_";
         } else {
             return;
         }
         deleteBitmap(oldUrl);
         try {
-            getFrameAtTime(url, mDuration, 50);
-            getFrameAtTime(url, mDuration, 30);
-            getFrameAtTime(url, mDuration, 20);
-            getFrameAtTime(url, mDuration, 10);
-            getFrameAtTime(url, mDuration, 5);
-            getFrameAtTime(url, mDuration, 3);
+//            getFrameAtTime(url, mDuration, 50);
+//            getFrameAtTime(url, mDuration, 30);
+//            getFrameAtTime(url, mDuration, 20);
+//            getFrameAtTime(url, mDuration, 10);
+//            getFrameAtTime(url, mDuration, 5);
+//            getFrameAtTime(url, mDuration, 3);
+            getFrameAtTime(url, mDuration, 1);
         } catch (Exception e) {
             e.printStackTrace();
             ffmmr = null;
@@ -157,7 +159,8 @@ public class PreviewImageUtils {
 
             File file = new File(path);
             if (file.exists()) {
-                String deleteDir = savePath + file.getName();
+//                String deleteDir = savePath + file.getName();
+                String deleteDir = savePath;
                 deleteFile(deleteDir);
             }
         } catch (Exception e) {
