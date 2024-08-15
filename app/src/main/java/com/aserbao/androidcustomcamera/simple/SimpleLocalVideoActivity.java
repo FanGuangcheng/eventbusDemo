@@ -101,6 +101,7 @@ public class SimpleLocalVideoActivity extends AppCompatActivity implements Media
     @BindView(R.id.pop_video_loading_fl)
     FrameLayout mPopVideoLoadingFl;
     private String mInputVideoPath = "/storage/emulated/0/aserbaoCamera/321.mp4";
+    private String mOutVideoFrames = "/storage/emulated/0/aserbaoCamera/321.mp4";
     private String mOutVideoPath;
     private int rotate;
     public ThumbAdapter mThumbAdapter;
@@ -234,6 +235,9 @@ public class SimpleLocalVideoActivity extends AppCompatActivity implements Media
         // todo fgc 输入本地视频的地址
 //        mInputVideoPath = getIntent().getBundleExtra(StaticFinalValues.BUNDLE).getString(StaticFinalValues.VIDEOFILEPATH);
         mInputVideoPath = "/storage/emulated/0/aserbaoCamera/1723032638188.mp4";
+//        mOutVideoFrames = "/storage/emulated/0/aserbaoFrames";
+        mOutVideoFrames = "/storage/emulated/0/aserbaoFrames/testVideo";
+
         initThumbs();//获取缩略图
         ArrayList<String> srcList = new ArrayList<>();
         srcList.add(mInputVideoPath);
@@ -284,7 +288,25 @@ public class SimpleLocalVideoActivity extends AppCompatActivity implements Media
         mLocalVideoView.requestLayout();
     }
 
+    boolean isSaveFrame = false;
 
+    private void saveFrame() {
+        Log.d("fgcfgc", "saveFrame:");
+
+        isSaveFrame = true;
+        CmdList cmd = new CmdList();
+//        cmd.append("-i input.mp4 -vf fps=30 output-%04d.png");
+        cmd.append("-i").append(mInputVideoPath);
+        cmd.append("-vf fps=2");
+        cmd.append(mOutVideoFrames + "/testShipin-%04d.png");
+
+        File file = new File(mOutVideoFrames);
+        if (!file.exists()){
+            file.mkdir();
+        }
+
+        exec(cmd);
+    }
 
     @Optional
     @OnClick({R.id.local_back_iv, R.id.local_rotate_iv, R.id.local_video_next_tv})
@@ -295,7 +317,8 @@ public class SimpleLocalVideoActivity extends AppCompatActivity implements Media
         lastTime = System.currentTimeMillis();
         switch (view.getId()) {
             case R.id.local_back_iv:
-                onBackPressed();
+//                onBackPressed();
+                saveFrame();
                 break;
             case R.id.local_rotate_iv:
                 isClickRotate = true;
@@ -411,6 +434,13 @@ public class SimpleLocalVideoActivity extends AppCompatActivity implements Media
         EpEditor.execCmd(stringBuffer.toString(), 0, new OnEditorListener() {
             @Override
             public void onSuccess() {
+                Log.d("fgcfgc", "onSuccess:");
+                if (isSaveFrame) {
+                    myHandler.sendEmptyMessage(CLIPPER_GONE);
+                    isSaveFrame = false;
+                    return;
+                }
+
                 isFailure = false;
                 if (!isLocalPortrait) {
                     if (!TextUtils.isEmpty(mSavevideotemp)) {
@@ -431,10 +461,13 @@ public class SimpleLocalVideoActivity extends AppCompatActivity implements Media
             public void onFailure() {
                 isFailure = true;
                 myHandler.sendEmptyMessage(CLIPPER_GONE);
+
+                Log.d("fgcfgc", "onFailure:");
             }
 
             @Override
             public void onProgress(float v) {
+                Log.d("fgcfgc", "onProgress:" + v);
             }
         });
     }

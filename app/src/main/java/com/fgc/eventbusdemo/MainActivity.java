@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.aserbao.androidcustomcamera.WelcomeActivity;
 import com.aserbao.androidcustomcamera.base.utils.StaticFinalValues;
 import com.aserbao.androidcustomcamera.simple.SimpleLocalVideoActivity;
+import com.aserbao.androidcustomcamera.simple.VideoFrameActivity;
 import com.aserbao.androidcustomcamera.whole.createVideoByVoice.localEdit.LocalVideoActivity;
 import com.aserbao.androidcustomcamera.whole.record.RecorderActivity;
 
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_click:
+//                gotoWelcomeActivity();
                 gotoSimpleLocalVideoActivity();
                 break;
         }
@@ -60,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void gotoSimpleLocalVideoActivity() {
-        Intent intent = new Intent(MainActivity.this, SimpleLocalVideoActivity.class);
+        //  视频帧快速浏览
+        Intent intent = new Intent(MainActivity.this, VideoFrameActivity.class);
+//        Intent intent = new Intent(MainActivity.this, SimpleLocalVideoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(StaticFinalValues.MISNOTCOMELOCAL, 0);
         intent.putExtra(StaticFinalValues.BUNDLE, bundle);
