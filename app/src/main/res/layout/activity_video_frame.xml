@@ -11,6 +11,7 @@
         android:src="@drawable/katong"
         android:layout_marginTop="50dp"
         android:scaleType="fitCenter"
+        android:background="@color/red"
         android:layout_width="match_parent"
         android:layout_height="500dp" />
     <TextView

@@ -86,7 +86,8 @@ public class VideoFrameActivity extends AppCompatActivity {
 
                 Log.d("fgcfgc", "index:" + index + "，progress：" + progress +"，count：" + count);
 
-                File file = new File("/storage/emulated/0/aserbaoFrames/frames/saveImg/frame_/" + index + ".jpg");
+//                File file = new File("/storage/emulated/0/aserbaoFrames/frames/saveImg/frame_/" + index + ".jpg");
+                File file = new File("/storage/emulated/0/Android/data/com.chinablue.tv/cache/video_frame_cache/1723032638188.mp4/" + index + ".jpg");
 
 //                Glide.with(VideoFrameActivity.this)
 //                        .load(file)

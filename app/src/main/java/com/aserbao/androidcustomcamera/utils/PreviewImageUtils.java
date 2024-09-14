@@ -112,9 +112,17 @@ public class PreviewImageUtils {
                     continue;
                 }
                 if (ffmmr != null) {
+                    Log.d("fgcfgc", "getScaledFrameAtTime start");
+
                     bitmap = ffmmr.getScaledFrameAtTime(pos, videoWidth, videoHeight);
+                    Log.d("fgcfgc", "getScaledFrameAtTime end");
+
+                    Log.d("fgcfgc", "saveBitmap start");
+
                     if (bitmap != null)
                         saveBitmap(bitmap, i, fileName);
+                    Log.d("fgcfgc", "saveBitmap end");
+
                 }
                 Thread.sleep(10);
                 if (isStop) {
